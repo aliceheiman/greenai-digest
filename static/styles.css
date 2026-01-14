@@ -1,0 +1,249 @@
+/* Import Google Fonts - Lora (serif) for headings, Inter (sans-serif) for body */
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+/* Root variables - Green & Gold color scheme */
+:root {
+    --green-primary: #2d5f3f;      /* Deep forest green */
+    --green-dark: #1f4429;         /* Darker green for hover */
+    --gold-accent: #d4af37;        /* Rich gold */
+    --gold-dark: #b8962e;          /* Darker gold for hover */
+    --gold-light: #f4e4b5;         /* Soft gold highlight */
+    --bg-white: #ffffff;
+    --bg-cream: #fafaf8;           /* Subtle cream background */
+
+    /* Pastel category colors */
+    --pastel-red: #ffcdd2;         /* AI for Medicine */
+    --pastel-red-dark: #ef9a9a;    /* Hover state */
+    --pastel-green: #c8e6c9;       /* Green AI */
+    --pastel-green-dark: #a5d6a7;  /* Hover state */
+    --pastel-blue: #bbdefb;        /* AI for Planet */
+    --pastel-blue-dark: #90caf9;   /* Hover state */
+    --pastel-purple: #e1bee7;      /* AI Ethics & Policy */
+    --pastel-purple-dark: #ce93d8; /* Hover state */
+    --pastel-gray: #e0e0e0;        /* Default */
+    --pastel-gray-dark: #bdbdbd;   /* Hover state */
+
+    /* Text colors */
+    --text-dark: #1a1a1a;
+    --text-medium: #4a4a4a;
+    --text-light: #7a7a7a;
+}
+
+/* Typography */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-cream);
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    color: var(--green-primary);
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+
+/* Custom category badge styles */
+.category-medicine {
+    background-color: var(--pastel-red);
+    color: #c62828;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid #ef9a9a;
+    transition: background-color 0.2s ease;
+}
+
+.category-medicine:hover {
+    background-color: var(--pastel-red-dark);
+}
+
+.category-green-ai {
+    background-color: var(--pastel-green);
+    color: #2e7d32;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid #a5d6a7;
+    transition: background-color 0.2s ease;
+}
+
+.category-green-ai:hover {
+    background-color: var(--pastel-green-dark);
+}
+
+.category-planet {
+    background-color: var(--pastel-blue);
+    color: #1565c0;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid #90caf9;
+    transition: background-color 0.2s ease;
+}
+
+.category-planet:hover {
+    background-color: var(--pastel-blue-dark);
+}
+
+.category-ethics {
+    background-color: var(--pastel-purple);
+    color: #6a1b9a;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid #ce93d8;
+    transition: background-color 0.2s ease;
+}
+
+.category-ethics:hover {
+    background-color: var(--pastel-purple-dark);
+}
+
+.category-default {
+    background-color: var(--pastel-gray);
+    color: var(--text-medium);
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid #bdbdbd;
+    transition: background-color 0.2s ease;
+}
+
+.category-default:hover {
+    background-color: var(--pastel-gray-dark);
+}
+
+/* Tag styles - smaller badges */
+.tag-badge {
+    background-color: var(--gold-light);
+    color: var(--text-medium);
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 400;
+    border: 1px solid var(--gold-accent);
+    display: inline-block;
+    margin-right: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.tag-badge:hover {
+    background-color: var(--gold-accent);
+    color: var(--bg-white);
+}
+
+/* Card styling */
+.article-card {
+    background: var(--bg-white);
+    border: 1px solid #e5e5e5;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Button styling */
+.btn-primary {
+    background: var(--green-primary);
+    color: white !important;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: var(--green-dark);
+    color: white !important;
+}
+
+/* Navbar styling */
+.nav-brand {
+    font-family: 'Lora', serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--green-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-link {
+    color: var(--text-medium);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    background-color: var(--gold-light);
+    color: var(--green-primary);
+}
+
+/* Relevancy badge */
+.relevancy-badge {
+    background: var(--gold-accent);
+    color: var(--text-dark);
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.4rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.relevancy-badge:hover {
+    background: var(--gold-dark);
+}
+
+/* Link styling */
+a {
+    color: var(--green-primary);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--green-dark);
+}
+
+/* Page container */
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .nav-brand {
+        font-size: 1.25rem;
+    }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+
+    .article-card {
+        padding: 1rem;
+    }
+
+    .page-container {
+        padding: 0 1rem;
+    }
+}
