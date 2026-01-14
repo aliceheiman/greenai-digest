@@ -134,14 +134,30 @@ def seed_sample_articles():
 
 
 if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Initialize database and seed data")
+    parser.add_argument(
+        "--no-samples",
+        action="store_true",
+        help="Skip adding sample articles (only initialize schema and categories)"
+    )
+
+    args = parser.parse_args()
+
     print("Initializing database...")
     init_db()
 
     print("Seeding categories...")
     seed_categories()
 
-    print("Adding sample articles...")
-    seed_sample_articles()
+    if not args.no_samples:
+        print("Adding sample articles...")
+        seed_sample_articles()
+    else:
+        print("Skipping sample articles (--no-samples flag set)")
 
     print("\n✓ Database setup complete!")
+    if args.no_samples:
+        print("Database initialized with schema and categories only.")
     print("Run 'python src/main.py' to start the application.")
