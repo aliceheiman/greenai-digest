@@ -213,6 +213,8 @@ data/
 .env
 logs/
 *.log
+.sesskey
+config_starter.py
 
 # IDEs
 .vscode/
