@@ -474,4 +474,5 @@ if __name__ == "__main__":
 
     # Get port from environment variable (Railway sets this) or use 5001 for local
     port = int(os.getenv("PORT", 5001))
-    serve(host="0.0.0.0", port=port)
+    # Disable autoreload in production to avoid multiple scheduler instances
+    serve(host="0.0.0.0", port=port, reload=False)
