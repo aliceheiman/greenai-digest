@@ -5,43 +5,104 @@ from typing import Dict, Optional
 # Keywords for each category
 CATEGORY_KEYWORDS = {
     "AI for Medicine": [
-        "medical", "health", "clinical", "disease", "diagnosis", "patient",
-        "hospital", "therapy", "drug", "cancer", "lesion", "imaging",
-        "radiology", "healthcare", "medicine", "diagnostic", "biomedical",
-        "pharmaceutical", "epidemiology", "medical imaging"
+        "medical",
+        "health",
+        "clinical",
+        "disease",
+        "diagnosis",
+        "patient",
+        "hospital",
+        "therapy",
+        "drug",
+        "cancer",
+        "lesion",
+        "imaging",
+        "radiology",
+        "healthcare",
+        "medicine",
+        "diagnostic",
+        "biomedical",
+        "pharmaceutical",
+        "epidemiology",
+        "medical imaging",
     ],
     "AI for Planet": [
-        "climate", "environment", "sustainability", "carbon", "energy",
-        "renewable", "solar", "wind", "emissions", "greenhouse", "ecological",
-        "conservation", "biodiversity", "water", "ocean", "atmospheric",
-        "weather", "pollution", "ecosystem", "flood", "drought", "forest",
-        "deforestation", "geophysics", "earth system"
+        "climate",
+        "environment",
+        "sustainability",
+        "carbon",
+        "energy",
+        "renewable",
+        "solar",
+        "wind",
+        "emissions",
+        "greenhouse",
+        "ecological",
+        "conservation",
+        "biodiversity",
+        "water",
+        "ocean",
+        "atmospheric",
+        "weather",
+        "pollution",
+        "ecosystem",
+        "flood",
+        "drought",
+        "forest",
+        "deforestation",
+        "geophysics",
+        "earth system",
     ],
     "Green AI": [
-        "energy efficient", "model compression", "pruning", "quantization",
-        "distillation", "carbon footprint", "sustainable computing",
-        "edge computing", "power consumption", "green computing",
-        "model efficiency", "computational cost", "training efficiency",
-        "inference efficiency", "parameter efficient", "sparse model",
-        "knowledge distillation", "neural architecture search", "automl",
-        "efficient transformer", "mobile ai", "tinyml", "edge ai",
-        "carbon emission", "energy consumption", "gpu power", "compute efficient"
+        "energy efficient",
+        "model compression",
+        "pruning",
+        "quantization",
+        "distillation",
+        "carbon footprint",
+        "sustainable computing",
+        "edge computing",
+        "power consumption",
+        "green computing",
+        "model efficiency",
+        "computational cost",
+        "training efficiency",
+        "inference efficiency",
+        "parameter efficient",
+        "sparse model",
+        "knowledge distillation",
+        "neural architecture search",
+        "automl",
+        "efficient transformer",
+        "mobile ai",
+        "tinyml",
+        "edge ai",
+        "carbon emission",
+        "energy consumption",
+        "gpu power",
+        "compute efficient",
     ],
-    "AI Ethics & Policy": [
-        "ethics", "fairness", "bias", "transparency", "explainability",
-        "interpretability", "privacy", "governance", "regulation", "policy",
-        "accountability", "safety", "alignment", "social impact", "responsible ai",
-        "trustworthy", "human rights", "discrimination", "equity"
-    ]
 }
 
 # Global keywords that must appear (at least one) for any article to be relevant
 # Use word boundaries to avoid false matches (e.g., "arterial" containing "ai")
 GLOBAL_KEYWORDS = [
-    " ai ", "artificial intelligence", "machine learning", "deep learning",
-    "neural network", "llm", "language model", "computer vision",
-    "reinforcement learning", " ml ", "machine-learning", "deep-learning",
-    "ai-powered", "ai-driven", "ai-based", "ml-based"
+    " ai ",
+    "artificial intelligence",
+    "machine learning",
+    "deep learning",
+    "neural network",
+    "llm",
+    "language model",
+    "computer vision",
+    "reinforcement learning",
+    " ml ",
+    "machine-learning",
+    "deep-learning",
+    "ai-powered",
+    "ai-driven",
+    "ai-based",
+    "ml-based",
 ]
 
 
@@ -92,7 +153,7 @@ def calculate_relevance(title: str, content: str) -> Optional[Dict]:
     return {
         "category": best_category,
         "confidence": min(best_score / 20, 1.0),  # Normalize to 0-1
-        "relevancy_score": min(best_score * 2, 100)  # Scale to 0-100
+        "relevancy_score": min(best_score * 2, 100),  # Scale to 0-100
     }
 
 
@@ -113,7 +174,9 @@ def is_relevant(title: str, content: str) -> bool:
 # Test cases
 if __name__ == "__main__":
     # Test case 1: Should be AI for Planet
-    test1_title = "Naiad: Novel Agentic Intelligent Autonomous System for Inland Water Monitoring"
+    test1_title = (
+        "Naiad: Novel Agentic Intelligent Autonomous System for Inland Water Monitoring"
+    )
     test1_content = "We present a novel AI system for monitoring water quality and detecting pollution in rivers and lakes using machine learning."
 
     result1 = calculate_relevance(test1_title, test1_content)

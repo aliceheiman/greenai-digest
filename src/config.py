@@ -8,10 +8,7 @@ class Settings(BaseSettings):
     
     # Database
     database_url: str = "sqlite:///data/greenai.db"
-    
-    # LLM API
-    anthropic_api_key: str
-    
+
     # Application
     secret_key: str = "dev-secret-key-change-in-production"
     debug: bool = True
@@ -28,6 +25,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = False
+        extra = "ignore"  # Ignore extra fields in .env
 
 
 settings = Settings()
