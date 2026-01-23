@@ -4,8 +4,62 @@ import feedparser
 from datetime import datetime
 from typing import List, Dict, Optional
 import logging
+import re
+from html.parser import HTMLParser
+from html import unescape
 
 logger = logging.getLogger(__name__)
+
+
+class HTMLStripper(HTMLParser):
+    """Strip HTML tags from text."""
+
+    def __init__(self):
+        super().__init__()
+        self.reset()
+        self.strict = False
+        self.convert_charrefs = True
+        self.text = []
+
+    def handle_data(self, data):
+        self.text.append(data)
+
+    def get_data(self):
+        return "".join(self.text).strip()
+
+
+def strip_html(html_content: str) -> str:
+    """
+    Remove HTML tags and decode HTML entities from content.
+
+    Args:
+        html_content: HTML string to clean
+
+    Returns:
+        Plain text with HTML tags removed
+    """
+    if not html_content:
+        return ""
+
+    # Remove img tags and their attributes
+    html_content = re.sub(r"<img[^>]*>", "", html_content, flags=re.IGNORECASE)
+
+    # Strip remaining HTML tags
+    stripper = HTMLStripper()
+    try:
+        stripper.feed(html_content)
+        text = stripper.get_data()
+    except Exception:
+        # Fallback: simple regex-based removal
+        text = re.sub(r"<[^>]+>", "", html_content)
+
+    # Decode HTML entities (e.g., &amp; -> &)
+    text = unescape(text)
+
+    # Clean up extra whitespace
+    text = re.sub(r"\s+", " ", text)
+
+    return text.strip()
 
 
 class RSSCollector:
@@ -47,9 +101,7 @@ class RSSCollector:
         for feed_config in self.feeds:
             try:
                 articles = self._fetch_feed(
-                    feed_config["url"],
-                    feed_config["source_name"],
-                    max_per_feed
+                    feed_config["url"], feed_config["source_name"], max_per_feed
                 )
                 all_articles.extend(articles)
                 logger.info(
@@ -130,7 +182,11 @@ class RSSCollector:
                 pass
 
         # If no published date, try updated date
-        if not published_date and hasattr(entry, "updated_parsed") and entry.updated_parsed:
+        if (
+            not published_date
+            and hasattr(entry, "updated_parsed")
+            and entry.updated_parsed
+        ):
             try:
                 published_date = datetime(*entry.updated_parsed[:6])
             except Exception:
@@ -145,7 +201,8 @@ class RSSCollector:
         elif hasattr(entry, "content") and len(entry.content) > 0:
             content = entry.content[0].get("value", "")
 
-        # Extract authors
+        # Clean HTML from content
+        content = strip_html(content)
         authors = ""
         if hasattr(entry, "authors"):
             authors = ", ".join([author.get("name", "") for author in entry.authors])
@@ -158,7 +215,7 @@ class RSSCollector:
             "source": source_name,
             "published_date": published_date,
             "content": content,
-            "authors": authors or "Unknown"
+            "authors": authors or "Unknown",
         }
 
 
@@ -170,8 +227,7 @@ if __name__ == "__main__":
     # Example: Create collector and add a feed
     collector = RSSCollector()
     collector.add_feed(
-        "http://export.arxiv.org/rss/cs.AI",
-        "arXiv - Artificial Intelligence"
+        "http://export.arxiv.org/rss/cs.AI", "arXiv - Artificial Intelligence"
     )
 
     # Fetch articles

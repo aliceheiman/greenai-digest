@@ -18,6 +18,8 @@
     --pastel-green-dark: #a5d6a7;  /* Hover state */
     --pastel-blue: #bbdefb;        /* AI for Planet */
     --pastel-blue-dark: #90caf9;   /* Hover state */
+    --pastel-orange: #ffe0b2;      /* AI for Energy */
+    --pastel-orange-dark: #ffcc80; /* Hover state */
     --pastel-purple: #e1bee7;      /* AI Ethics & Policy */
     --pastel-purple-dark: #ce93d8; /* Hover state */
     --pastel-gray: #e0e0e0;        /* Default */
@@ -94,6 +96,21 @@ h4 { font-size: 1.25rem; }
 
 .category-planet:hover {
     background-color: var(--pastel-blue-dark);
+}
+
+.category-energy {
+    background-color: var(--pastel-orange);
+    color: #e65100;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid #ffcc80;
+    transition: background-color 0.2s ease;
+}
+
+.category-energy:hover {
+    background-color: var(--pastel-orange-dark);
 }
 
 .category-ethics {

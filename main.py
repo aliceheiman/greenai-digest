@@ -13,8 +13,9 @@ def get_category_class(category):
     """Return custom CSS class for different categories."""
     styles = {
         "AI for Medicine": "category-medicine",
-        "Green AI": "category-green-ai",
+        "AI for Energy": "category-energy",
         "AI for Planet": "category-planet",
+        "Green AI": "category-green-ai",
     }
     return styles.get(category, "category-default")
 
@@ -257,8 +258,9 @@ def about():
                 style="margin-bottom: 0.5rem; line-height: 1.6;",
             ),
             Ul(
-                Li("AI for Planet - Climate modeling, energy efficiency"),
                 Li("AI for Medicine - Lesion detection, diagnostic imaging"),
+                Li("AI for Energy - Solar, wind, grid optimization"),
+                Li("AI for Planet - Climate modeling, conservation"),
                 Li("Green AI - Model efficiency, sustainable computing"),
                 style="margin-left: 2rem; line-height: 1.8;",
             ),

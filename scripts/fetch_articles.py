@@ -14,8 +14,7 @@ import logging
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -77,20 +76,20 @@ def fetch_and_store_articles(max_per_feed: int = 20):
         if source_always_included:
             # Auto-classify based on content for always-included sources
             classification_data = calculate_relevance(
-                article_data["title"],
-                article_data["content"]
+                article_data["title"], article_data["content"]
             )
             # If no strong classification match, skip the article
             # (don't force everything into Green AI)
             if not classification_data:
                 filtered_count += 1
-                logger.debug(f"Skipped (always-include source but no category match): {article_data['title']}")
+                logger.debug(
+                    f"Skipped (always-include source but no category match): {article_data['title']}"
+                )
                 continue
         else:
             # Check relevance using keyword filter for other sources
             classification_data = calculate_relevance(
-                article_data["title"],
-                article_data["content"]
+                article_data["title"], article_data["content"]
             )
 
             if not classification_data:
@@ -105,7 +104,7 @@ def fetch_and_store_articles(max_per_feed: int = 20):
             source=article_data["source"],
             published_date=article_data["published_date"],
             content=article_data["content"],
-            authors=article_data["authors"]
+            authors=article_data["authors"],
         )
 
         session.add(article)
@@ -117,7 +116,7 @@ def fetch_and_store_articles(max_per_feed: int = 20):
             category=classification_data["category"],
             confidence=classification_data["confidence"],
             relevancy_score=classification_data["relevancy_score"],
-            tags=""  # Can add tag extraction later
+            tags="",  # Can add tag extraction later
         )
 
         session.add(classification)
@@ -146,7 +145,7 @@ if __name__ == "__main__":
         "--max-per-feed",
         type=int,
         default=20,
-        help="Maximum articles to fetch per feed (default: 20)"
+        help="Maximum articles to fetch per feed (default: 20)",
     )
 
     args = parser.parse_args()
