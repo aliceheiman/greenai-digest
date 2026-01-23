@@ -334,6 +334,112 @@ def about():
                 '"Always Include" sources have all articles included without filtering. "Filtered" sources are checked for relevance to our focus areas.',
                 style="color: var(--text-light); font-size: 0.875rem; font-style: italic;",
             ),
+            # Methods section
+            H3("Methods", style="margin: 3rem 0 1rem 0;"),
+            P(
+                "Our article collection and classification pipeline consists of four main stages:",
+                style="color: var(--text-medium); margin-bottom: 1.5rem;",
+            ),
+            # Stage 1
+            Div(
+                H4(
+                    "1. RSS Feed Collection",
+                    style="color: var(--green-primary); margin: 0 0 0.5rem 0;",
+                ),
+                P(
+                    "Articles are collected from RSS feeds using the feedparser library. Each feed entry is parsed to extract:",
+                    style="margin-bottom: 0.5rem;",
+                ),
+                Ul(
+                    Li("Title and URL (required fields)"),
+                    Li("Publication date (from published_parsed or updated_parsed)"),
+                    Li(
+                        "Content/summary (from summary, description, or content fields)"
+                    ),
+                    Li("Author information"),
+                    style="margin-left: 2rem; line-height: 1.6; margin-bottom: 1rem;",
+                ),
+                P(
+                    "HTML tags and entities are stripped from content using a custom HTMLStripper parser to ensure clean text for analysis.",
+                    style="margin-bottom: 1.5rem;",
+                ),
+                style="margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-cream); border-left: 4px solid var(--green-primary);",
+            ),
+            # Stage 2
+            Div(
+                H4(
+                    "2. AI Relevance Check",
+                    style="color: var(--green-primary); margin: 0 0 0.5rem 0;",
+                ),
+                P(
+                    "Articles must first pass a global AI relevance check. The system searches for AI-related keywords such as:",
+                    style="margin-bottom: 0.5rem;",
+                ),
+                P(
+                    '"artificial intelligence", "machine learning", "deep learning", "neural network", "computer vision", "AI-powered", and more.',
+                    style="font-style: italic; color: var(--text-medium); margin: 0 0 1rem 2rem;",
+                ),
+                P(
+                    "Articles without any AI-related keywords are filtered out.",
+                    style="margin-bottom: 1.5rem;",
+                ),
+                style="margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-cream); border-left: 4px solid var(--green-primary);",
+            ),
+            # Stage 3
+            Div(
+                H4(
+                    "3. Category Classification",
+                    style="color: var(--green-primary); margin: 0 0 0.5rem 0;",
+                ),
+                P(
+                    "Relevant articles are then classified into one of three categories using keyword matching:",
+                    style="margin-bottom: 0.5rem;",
+                ),
+                Ul(
+                    Li(
+                        Strong("AI for Medicine:"),
+                        " Keywords including medical, health, clinical, diagnosis, patient, hospital, imaging, healthcare",
+                    ),
+                    Li(
+                        Strong("AI for Planet:"),
+                        " Keywords including climate, environment, sustainability, conservation, biodiversity, ocean, weather, pollution",
+                    ),
+                    Li(
+                        Strong("Green AI:"),
+                        " Keywords including energy efficient, model compression, sustainable computing, carbon footprint, edge AI, renewable energy, smart grid",
+                    ),
+                    style="margin-left: 2rem; line-height: 1.8; margin-bottom: 1rem;",
+                ),
+                P(
+                    "The system counts keyword matches for each category and assigns the article to the category with the highest match percentage.",
+                    style="margin-bottom: 1.5rem;",
+                ),
+                style="margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-cream); border-left: 4px solid var(--green-primary);",
+            ),
+            # Stage 4
+            Div(
+                H4(
+                    "4. Relevancy Scoring",
+                    style="color: var(--green-primary); margin: 0 0 0.5rem 0;",
+                ),
+                P(
+                    "Each classified article receives a relevancy score (0-100) calculated as:",
+                    style="margin-bottom: 0.5rem;",
+                ),
+                P(
+                    "Relevancy Score = (Number of Matching Keywords / Total Category Keywords) × 100 × 2",
+                    style="font-family: monospace; background: white; padding: 1rem; border-radius: 0.25rem; margin: 1rem 0; border: 1px solid #e5e5e5;",
+                ),
+                P(
+                    "Articles must achieve at least 5% keyword match (minimum threshold) to be included in the digest. This attempts to ensure that only highly relevant articles are displayed.",
+                    style="margin-bottom: 0.5rem;",
+                ),
+                P(
+                    "A confidence score (0-1) is also calculated for internal quality assessment, normalized as (match_percentage / 20).",
+                    style="margin-bottom: 1.5rem;",
+                ),
+                style="margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-cream); border-left: 4px solid var(--green-primary);",
+            ),
             style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;",
         ),
     )
