@@ -3,6 +3,7 @@
 from fasthtml.common import *
 from monsterui.all import *
 from src.database import get_session, Article, Classification
+from src.collectors.feed_sources import get_all_feeds
 from datetime import datetime
 
 # Create FastHTML app with link to external CSS
@@ -253,6 +254,31 @@ def archive():
 @rt("/about")
 def about():
     """About page."""
+    # Get all feed sources
+    feeds = get_all_feeds()
+
+    # Create table rows for each feed
+    feed_rows = []
+    for url, name, always_include in feeds:
+        feed_rows.append(
+            Tr(
+                Td(name, style="padding: 0.75rem; border-bottom: 1px solid #e5e5e5;"),
+                Td(
+                    A(
+                        url,
+                        href=url,
+                        target="_blank",
+                        style="color: var(--green-primary); text-decoration: none;",
+                    ),
+                    style="padding: 0.75rem; border-bottom: 1px solid #e5e5e5; word-break: break-all;",
+                ),
+                Td(
+                    "Always Include" if always_include else "Filtered",
+                    style=f"padding: 0.75rem; border-bottom: 1px solid #e5e5e5; color: {'var(--green-primary)' if always_include else 'var(--text-medium)'};",
+                ),
+            )
+        )
+
     return Title("About - GreenAI Digest"), Div(
         NavBar(),
         Div(
@@ -270,10 +296,43 @@ def about():
                 style="margin-bottom: 0.5rem; line-height: 1.6;",
             ),
             Ul(
-                Li("AI for Planet - Climate modeling, energy efficiency"),
                 Li("AI for Medicine - Lesion detection, diagnostic imaging"),
+                Li("AI for Planet - Climate modeling, biodiversity monitoring"),
                 Li("Green AI - Model efficiency, sustainable computing"),
-                style="margin-left: 2rem; line-height: 1.8;",
+                style="margin-left: 2rem; line-height: 1.8; margin-bottom: 3rem;",
+            ),
+            # Data Sources section
+            H3("Data Sources", style="margin: 2rem 0 1rem 0;"),
+            P(
+                "We collect articles from the following high-quality sources:",
+                style="color: var(--text-medium); margin-bottom: 1rem;",
+            ),
+            Div(
+                Table(
+                    Thead(
+                        Tr(
+                            Th(
+                                "Source",
+                                style="padding: 0.75rem; border-bottom: 2px solid var(--green-primary); text-align: left; font-weight: 600;",
+                            ),
+                            Th(
+                                "RSS Feed URL",
+                                style="padding: 0.75rem; border-bottom: 2px solid var(--green-primary); text-align: left; font-weight: 600;",
+                            ),
+                            Th(
+                                "Type",
+                                style="padding: 0.75rem; border-bottom: 2px solid var(--green-primary); text-align: left; font-weight: 600;",
+                            ),
+                        )
+                    ),
+                    Tbody(*feed_rows),
+                    style="width: 100%; border-collapse: collapse; background: white; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);",
+                ),
+                style="overflow-x: auto; margin-bottom: 2rem;",
+            ),
+            P(
+                '"Always Include" sources have all articles included without filtering. "Filtered" sources are checked for relevance to our focus areas.',
+                style="color: var(--text-light); font-size: 0.875rem; font-style: italic;",
             ),
             style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;",
         ),
