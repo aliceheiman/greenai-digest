@@ -446,4 +446,7 @@ def about():
 
 
 if __name__ == "__main__":
-    serve()
+    import os
+    # Get port from environment variable (Railway sets this) or use 5001 for local
+    port = int(os.getenv("PORT", 5001))
+    serve(host="0.0.0.0", port=port)

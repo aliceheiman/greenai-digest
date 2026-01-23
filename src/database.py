@@ -1,5 +1,15 @@
 """Database models and setup."""
-from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, Float, ForeignKey
+
+from sqlalchemy import (
+    create_engine,
+    Column,
+    Integer,
+    String,
+    Text,
+    DateTime,
+    Float,
+    ForeignKey,
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
@@ -24,7 +34,9 @@ class Article(Base):
     authors = Column(String)
 
     # Relationship
-    classifications = relationship("Classification", back_populates="article", cascade="all, delete-orphan")
+    classifications = relationship(
+        "Classification", back_populates="article", cascade="all, delete-orphan"
+    )
 
     def __repr__(self):
         return f"<Article(id={self.id}, title='{self.title[:50]}...')>"
@@ -80,8 +92,25 @@ class UserPreference(Base):
 
 # Database setup
 def get_engine():
-    """Create and return database engine."""
-    return create_engine(settings.database_url, connect_args={"check_same_thread": False})
+    """Create and return database engine with appropriate settings for SQLite or PostgreSQL."""
+    db_url = settings.database_url
+
+    # SQLite-specific configuration
+    if db_url.startswith("sqlite"):
+        return create_engine(
+            db_url, connect_args={"check_same_thread": False}, pool_pre_ping=True
+        )
+
+    # PostgreSQL-specific configuration
+    else:
+        return create_engine(
+            db_url,
+            pool_size=10,  # Connection pool size
+            max_overflow=20,  # Max connections beyond pool_size
+            pool_pre_ping=True,  # Verify connections before using
+            pool_recycle=3600,  # Recycle connections after 1 hour
+            echo=False,  # Set to True for SQL query logging
+        )
 
 
 def get_session():
@@ -103,11 +132,26 @@ def seed_categories():
     session = get_session()
 
     categories = [
-        Category(name="AI for Planet", description="Environmental applications of AI including climate modeling and energy efficiency"),
-        Category(name="AI for Medicine", description="Healthcare applications including lesion detection and diagnostic imaging"),
-        Category(name="Green AI", description="Sustainable AI development and model efficiency"),
-        Category(name="AI Ethics & Policy", description="Governance, fairness, and privacy in AI"),
-        Category(name="General AI Research", description="General AI research and developments"),
+        Category(
+            name="AI for Planet",
+            description="Environmental applications of AI including climate modeling and energy efficiency",
+        ),
+        Category(
+            name="AI for Medicine",
+            description="Healthcare applications including lesion detection and diagnostic imaging",
+        ),
+        Category(
+            name="Green AI",
+            description="Sustainable AI development and model efficiency",
+        ),
+        Category(
+            name="AI Ethics & Policy",
+            description="Governance, fairness, and privacy in AI",
+        ),
+        Category(
+            name="General AI Research",
+            description="General AI research and developments",
+        ),
     ]
 
     for cat in categories:

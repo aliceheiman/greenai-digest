@@ -1,0 +1,26 @@
+# Railway ignore file - files to exclude from deployment
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.env
+.env.local
+.venv/
+venv/
+data/*.db
+data/*.db-journal
+*.sqlite
+*.sqlite3
+.git/
+.gitignore
+.DS_Store
+tests/
+*.md
+docs/
+scripts/test_*.py
