@@ -13,11 +13,28 @@ def get_category_class(category):
     """Return custom CSS class for different categories."""
     styles = {
         "AI for Medicine": "category-medicine",
-        "AI for Energy": "category-energy",
-        "AI for Planet": "category-planet",
         "Green AI": "category-green-ai",
+        "AI for Planet": "category-planet",
     }
     return styles.get(category, "category-default")
+
+
+def NavBar():
+    return Div(
+        Div(
+            # Brand
+            Div("🌱 GreenAI Digest", cls="nav-brand"),
+            # Nav links
+            Div(
+                A("Daily Digest", href="/", cls="nav-link"),
+                A("About", href="/about", cls="nav-link"),
+                A("Archive", href="/archive", cls="nav-link"),
+                style="display: flex; gap: 0.5rem; align-items: center;",
+            ),
+            style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem;",
+        ),
+        style="background: white; border-bottom: 1px solid #e5e5e5; margin-bottom: 2rem;",
+    )
 
 
 def ArticleCard(article, classification=None):
@@ -71,11 +88,11 @@ def ArticleCard(article, classification=None):
         ),
         # Footer with relevancy and button
         Div(
-            (
-                Span(f"Relevancy: {int(relevancy)}/100", cls="relevancy-badge")
-                if classification
-                else None
-            ),
+            # (
+            #     Span(f"Relevancy: {int(relevancy)}/100", cls="relevancy-badge")
+            #     if classification
+            #     else None
+            # ),
             A("Read Article →", href=article.url, target="_blank", cls="btn-primary"),
             style="display: flex; justify-content: space-between; align-items: center;",
         ),
@@ -84,18 +101,30 @@ def ArticleCard(article, classification=None):
 
 
 @rt("/")
-def index():
+def index(category: str = None, offset: int = 0):
     """Home page - Daily digest of articles."""
     session = get_session()
 
+    per_page = 10
+
     # Get all articles with their classifications, ordered by latest first
+    query = session.query(Article).join(Classification)
+
+    # Apply category filter if specified
+    if category and category != "All":
+        query = query.filter(Classification.category == category)
+
+    # Get articles with offset and check if there are more
     articles = (
-        session.query(Article)
-        .join(Classification)
-        .order_by(Article.published_date.desc())
-        .limit(10)
+        query.order_by(Article.published_date.desc())
+        .offset(offset)
+        .limit(per_page)
         .all()
     )
+
+    # Check if there are more articles
+    total_count = query.count()
+    has_more = (offset + per_page) < total_count
 
     # If no articles, show empty state
     if not articles:
@@ -123,6 +152,23 @@ def index():
             )
             article_cards.append(ArticleCard(article, classification))
 
+        # Category filter buttons
+        all_categories = ["All", "AI for Medicine", "AI for Planet", "Green AI"]
+        current_category = category or "All"
+
+        filter_buttons = Div(
+            *[
+                A(
+                    cat,
+                    href=f"/?category={cat}" if cat != "All" else "/",
+                    cls=get_category_class(cat) if cat != "All" else "category-default",
+                    style=f"padding: 0.5rem 1rem; text-decoration: none; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; {'opacity: 1; box-shadow: 0 2px 4px rgba(0,0,0,0.1);' if cat == current_category else 'opacity: 0.6;'}",
+                )
+                for cat in all_categories
+            ],
+            style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;",
+        )
+
         content = Div(
             # Header section
             Div(
@@ -131,87 +177,67 @@ def index():
                     f"Latest {len(articles)} articles • {datetime.now().strftime('%B %d, %Y')}",
                     style="color: var(--text-light); font-size: 1rem; margin: 0;",
                 ),
-                style="margin-bottom: 2rem;",
+                style="margin-bottom: 1.5rem;",
             ),
+            # Category filter
+            filter_buttons,
             # Article cards
             Div(*article_cards),
+            # Pagination buttons
+            (
+                Div(
+                    # Previous button
+                    (
+                        A(
+                            "← Previous Page",
+                            href=(
+                                f"/?category={category}&offset={max(0, offset - per_page)}"
+                                if category
+                                else f"/?offset={max(0, offset - per_page)}"
+                            ),
+                            cls="btn-primary",
+                            style="padding: 0.75rem 1.5rem; text-decoration: none; display: inline-block; text-align: center;",
+                        )
+                        if offset > 0
+                        else None
+                    ),
+                    # Next button
+                    (
+                        A(
+                            "Next Page →",
+                            href=(
+                                f"/?category={category}&offset={offset + per_page}"
+                                if category
+                                else f"/?offset={offset + per_page}"
+                            ),
+                            cls="btn-primary",
+                            style="padding: 0.75rem 1.5rem; text-decoration: none; display: inline-block; text-align: center;",
+                        )
+                        if has_more
+                        else None
+                    ),
+                    style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem;",
+                )
+                if (offset > 0 or has_more)
+                else None
+            ),
         )
 
     session.close()
 
     # Custom Navigation bar
-    navbar = Div(
-        Div(
-            # Brand
-            Div("🌱 GreenAI Digest", cls="nav-brand"),
-            # Nav links
-            Div(
-                A("Daily Digest", href="/", cls="nav-link"),
-                A("Categories", href="/categories", cls="nav-link"),
-                A("Archive", href="/archive", cls="nav-link"),
-                style="display: flex; gap: 0.5rem; align-items: center;",
-            ),
-            style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem;",
-        ),
-        style="background: white; border-bottom: 1px solid #e5e5e5; margin-bottom: 2rem;",
-    )
 
     return Title("GreenAI Digest - Daily News"), Div(
-        navbar,
+        NavBar(),
         Div(content, style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;"),
-    )
-
-
-@rt("/categories")
-def categories():
-    """Categories page - Browse by category."""
-    navbar = Div(
-        Div(
-            Div("🌱 GreenAI Digest", cls="nav-brand"),
-            Div(
-                A("Daily Digest", href="/", cls="nav-link"),
-                A("Categories", href="/categories", cls="nav-link"),
-                A("Archive", href="/archive", cls="nav-link"),
-                style="display: flex; gap: 0.5rem; align-items: center;",
-            ),
-            style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem;",
-        ),
-        style="background: white; border-bottom: 1px solid #e5e5e5; margin-bottom: 2rem;",
-    )
-
-    return Title("Categories"), Div(
-        navbar,
-        Div(
-            H2("Categories", style="margin: 0 0 0.5rem 0;"),
-            P(
-                "Browse articles by category",
-                style="color: var(--text-light); margin-bottom: 2rem;",
-            ),
-            P("Coming soon!", style="color: var(--text-medium);"),
-            style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;",
-        ),
     )
 
 
 @rt("/archive")
 def archive():
     """Archive page - Search and filter all articles."""
-    navbar = Div(
-        Div(
-            Div("🌱 GreenAI Digest", cls="nav-brand"),
-            Div(
-                A("Daily Digest", href="/", cls="nav-link"),
-                A("Categories", href="/categories", cls="nav-link"),
-                A("Archive", href="/archive", cls="nav-link"),
-                style="display: flex; gap: 0.5rem; align-items: center;",
-            ),
-            style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem;",
-        ),
-        style="background: white; border-bottom: 1px solid #e5e5e5; margin-bottom: 2rem;",
-    )
-
     return Title("Archive"), Div(
-        navbar,
+        NavBar(),
         Div(
             H2("Archive", style="margin: 0 0 0.5rem 0;"),
             P(
@@ -227,22 +253,8 @@ def archive():
 @rt("/about")
 def about():
     """About page."""
-    navbar = Div(
-        Div(
-            Div("🌱 GreenAI Digest", cls="nav-brand"),
-            Div(
-                A("Daily Digest", href="/", cls="nav-link"),
-                A("Categories", href="/categories", cls="nav-link"),
-                A("Archive", href="/archive", cls="nav-link"),
-                style="display: flex; gap: 0.5rem; align-items: center;",
-            ),
-            style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem;",
-        ),
-        style="background: white; border-bottom: 1px solid #e5e5e5; margin-bottom: 2rem;",
-    )
-
     return Title("About - GreenAI Digest"), Div(
-        navbar,
+        NavBar(),
         Div(
             H2("About GreenAI Digest", style="margin: 0 0 0.5rem 0;"),
             P(
@@ -258,9 +270,8 @@ def about():
                 style="margin-bottom: 0.5rem; line-height: 1.6;",
             ),
             Ul(
+                Li("AI for Planet - Climate modeling, energy efficiency"),
                 Li("AI for Medicine - Lesion detection, diagnostic imaging"),
-                Li("AI for Energy - Solar, wind, grid optimization"),
-                Li("AI for Planet - Climate modeling, conservation"),
                 Li("Green AI - Model efficiency, sustainable computing"),
                 style="margin-left: 2rem; line-height: 1.8;",
             ),
