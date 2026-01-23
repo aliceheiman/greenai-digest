@@ -1,52 +1,136 @@
 # GreenAI Digest
 
-A news aggregation and curation system focused on AI research with environmental and medical impact.
+A news aggregation and AI classification system focused on research with environmental and medical impact.
 
-## Features
+## 🎯 Features
 
-- **Daily Digest**: Curated list of top AI articles by relevancy
-- **Categories**:
-  - AI for Planet (climate modeling, energy efficiency)
-  - AI for Medicine (lesion detection, diagnostic imaging)
-  - Green AI (model efficiency, sustainable computing)
+- **Latest Articles**: Real-time feed from 28+ RSS sources
+- **Smart Filtering**: Keyword-based classification into 3 categories
+- **Category Filter**: AI for Planet | AI for Medicine | Green AI
+- **Pagination**: Browse articles with Previous/Next navigation
+- **Relevancy Scoring**: 0-100 score based on keyword matching
 
-## Quick Start
+## 🏗️ Architecture
 
-### 1. Setup Python Environment
-
-Make sure you have Python 3.10+ installed:
-
-```bash
-# Create virtual environment
-python3.10 -m venv venv
-
-# Activate virtual environment
-source venv/bin/activate  # On macOS/Linux
+```
+┌─────────────────────────────────────────────┐
+│         GreenAI Digest Application          │
+├─────────────────────────────────────────────┤
+│  FastHTML (Web Framework)                   │
+│  + MonsterUI (UI Components)                │
+├─────────────────────────────────────────────┤
+│  RSS Collectors → Keyword Filter → Database │
+├─────────────────────────────────────────────┤
+│  Local: SQLite  │  Production: PostgreSQL   │
+└─────────────────────────────────────────────┘
 ```
 
-### 2. Install Dependencies
+## 📦 Tech Stack
 
+| Component | Technology |
+|-----------|-----------|
+| **Web Framework** | FastHTML |
+| **UI Components** | MonsterUI |
+| **Database** | SQLite (local) / PostgreSQL (production) |
+| **ORM** | SQLAlchemy |
+| **RSS Parsing** | feedparser |
+| **Deployment** | Railway |
+
+## 🚀 Quick Start (Local Development)
+
+### Setup
 ```bash
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Initialize Database
-
-Run the initialization script to create the database and add sample data:
-
+### Run
 ```bash
-python scripts/init_db.py
+python scripts/init_db.py  # First time only
+python main.py             # Then run app
 ```
 
-This will:
-- Create the SQLite database in `data/greenai.db`
-- Set up all necessary tables
-- Seed initial categories
-- Add sample articles for testing
+Visit: `http://localhost:5001`
 
-### 4. Run the Application
+## 🌐 Production Deployment
 
-Start the FastHTML server:
+**Deployed on:** Railway  
+**Database:** PostgreSQL  
+**Auto-deploy:** GitHub push → Railway
+
+### Deploy Changes
+```bash
+git add .
+git commit -m "Your message"
+git push  # Auto-deploys to Railway
+```
+
+## 📚 Documentation
+
+- **[RAILWAY_DEPLOYMENT.md](docs/RAILWAY_DEPLOYMENT.md)** - Deployment guide
+- **[POSTGRESQL_SETUP.md](docs/POSTGRESQL_SETUP.md)** - Database setup (local testing)
+- **[design_spec.md](docs/design_spec.md)** - Architecture & design
+
+## 🗂️ Project Structure
+
+```
+greenai-digest/
+├── main.py                    # FastHTML app + routes
+├── src/
+│   ├── database.py           # SQLAlchemy models
+│   ├── config.py             # Settings
+│   ├── collectors/
+│   │   ├── rss_collector.py  # RSS fetching
+│   │   ├── relevance_filter.py # Classification
+│   │   └── feed_sources.py   # 28 RSS feeds
+│   └── models/
+├── scripts/
+│   ├── init_db.py            # Initialize database
+│   ├── fetch_articles.py     # Populate articles
+│   ├── test_feed_urls.py     # Validate feeds
+│   └── migrate_to_postgres.py # SQLite→PostgreSQL
+├── static/
+│   └── styles.css            # Custom styles
+└── data/
+    └── greenai.db            # SQLite (local only)
+```
+
+## 📊 Data Pipeline
+
+```
+RSS Feeds (28 sources)
+    ↓
+Fetch & Parse (feedparser)
+    ↓
+HTML Cleanup (strip tags, decode entities)
+    ↓
+Keyword Matching (relevance_filter.py)
+    ↓
+Classification (AI for Planet/Medicine/Green AI)
+    ↓
+Store in Database (SQLite/PostgreSQL)
+    ↓
+Display in UI (sorted by date, with relevancy score)
+```
+
+## 🔄 Database Difference
+
+| Local Development | Production |
+|---|---|
+| **SQLite** | **PostgreSQL** |
+| File-based | Client-server |
+| No setup needed | Automatic on Railway |
+| `sqlite:///data/greenai.db` | `DATABASE_URL` env var |
+
+## 📋 Categories & Keywords
+
+**3 Active Categories:**
+- **AI for Planet** (23 keywords): climate, energy, emissions, sustainability...
+- **AI for Medicine** (20 keywords): diagnosis, lesion detection, imaging, treatment...
+- **Green AI** (45+ keywords): efficiency, optimization, carbon, model compression...
+
+Articles need 5% minimum keyword match to be included.
 
 ```bash
 python src/main.py

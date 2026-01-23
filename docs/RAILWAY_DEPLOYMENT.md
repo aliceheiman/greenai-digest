@@ -1,163 +1,105 @@
 # Railway Deployment Guide
 
-## Quick Deploy to Railway
+## 🚀 Current Setup
 
-### 1. Create Railway Account
-- Go to [railway.app](https://railway.app)
-- Sign up with GitHub
+Your GreenAI Digest is **already deployed on Railway**!
 
-### 2. Create New Project
-1. Click "New Project"
-2. Select "Deploy from GitHub repo"
-3. Select your `greenai-digest` repository
-4. Railway will auto-detect the Python app
-
-### 3. Add PostgreSQL Database
-1. In your Railway project, click "New"
-2. Select "Database" → "PostgreSQL"
-3. Railway automatically creates a PostgreSQL instance
-4. It will auto-set `DATABASE_URL` environment variable
-
-### 4. Configure Environment Variables
-Railway auto-sets `DATABASE_URL`, but you can add more in Settings → Variables:
-
-```
-DATABASE_URL=<automatically set by Railway>
-SECRET_KEY=<generate a secure key>
-DEBUG=False
-LOG_LEVEL=INFO
-```
-
-### 5. Initialize Database (First Time Only)
-After first deployment, run this command in Railway:
-```bash
-python scripts/init_db.py
-```
-
-To run commands in Railway:
-- Go to your service → Settings → "Deploy" section
-- Or use Railway CLI (see below)
-
-### 6. Populate Articles
-Schedule or manually run:
-```bash
-python scripts/fetch_articles.py
-```
+**Live URL:** Check your Railway project's Networking tab  
+**Database:** PostgreSQL (auto-provisioned)  
+**Deployment:** Auto-deploys on GitHub push
 
 ---
 
-## Railway CLI (Optional but Recommended)
+## 🔄 Deployment Workflow
 
-### Install Railway CLI:
+**Make changes locally:**
 ```bash
-npm i -g @railway/cli
-# or with Homebrew:
-brew install railway
+git add .
+git commit -m "Your changes"
+git push origin main
+git push deploy main:main # to deployment account
 ```
 
-### Login and link project:
+**Railway automatically:**
+1. Detects the push
+2. Builds the app (installs dependencies)
+3. Initializes database (if needed)
+4. Deploys with zero downtime
+
+**View logs:**
+- Go to Railway dashboard → `greenai-digest` service → Deployments → Logs
+
+---
+
+## 🛠️ Common Tasks
+
+### Fetch Latest Articles
+Option 1 - Automatic (scheduled):
 ```bash
+# Coming soon: GitHub Actions cron job
+```
+
+Option 2 - Manual (using Railway CLI):
+```bash
+brew install railway
 railway login
 railway link
+railway run python scripts/fetch_articles.py
 ```
 
-### Run commands on Railway:
+### Check Database Status
+1. Go to Railway project
+2. Click `postgres` service
+3. Click "Data" to browse tables
+
+### View Live Logs
 ```bash
-# Initialize database
-railway run python scripts/init_db.py
-
-# Fetch articles
-railway run python scripts/fetch_articles.py
-
-# Check logs
 railway logs
 ```
 
 ---
 
-## Deployment Workflow
+## 📊 Environment Variables
 
-### Every time you push to GitHub:
-1. Commit and push changes:
-   ```bash
-   git add .
-   git commit -m "Update feature"
-   git push origin main
-   ```
+**Automatically set by Railway:**
+- `DATABASE_URL` → PostgreSQL connection string
+- `PORT` → 8080 (handled in main.py)
 
-2. Railway automatically:
-   - Detects the push
-   - Builds the app
-   - Deploys with zero downtime
-   - Uses PostgreSQL from DATABASE_URL
-
-### View your live site:
-- Railway provides a public URL (e.g., `greenai-digest-production.up.railway.app`)
-- Find it in: Settings → Domains
+**Optional (add in Railway Settings → Variables):**
+```
+DEBUG=False
+LOG_LEVEL=INFO
+SECRET_KEY=<secure-key>
+```
 
 ---
 
-## Environment Setup Summary
+## 🆘 Troubleshooting
 
-**Local Development:**
-- Uses SQLite (`sqlite:///data/greenai.db`)
-- No DATABASE_URL environment variable needed
-- Run: `python main.py`
-
-**Railway Production:**
-- Uses PostgreSQL (auto-configured)
-- DATABASE_URL automatically set by Railway
-- Auto-deploys on git push
+| Error | Solution |
+|-------|----------|
+| "Tables don't exist" | Already fixed - `init_db.py` runs on startup |
+| App won't start | Check logs: Railway → Deployments → Logs |
+| PostgreSQL not connecting | Verify `DATABASE_URL` exists in Environment Variables |
+| Deployment stuck | Manual redeploy: Railway → Settings → Redeploy |
 
 ---
 
-## Initial Setup Checklist
+## 📈 Scaling
 
-- [ ] Push code to GitHub
-- [ ] Create Railway account
-- [ ] Deploy from GitHub repo
-- [ ] Add PostgreSQL database
-- [ ] Run `railway run python scripts/init_db.py`
-- [ ] Run `railway run python scripts/fetch_articles.py`
-- [ ] Visit your live URL!
+**Current tier:** Hobby ($5/month credit)  
+**Upgrade path:**
+1. Railway → Settings → Billing
+2. Upgrade to Pro for more resources
+3. Add background job service for scheduled tasks (next step)
 
 ---
 
-## Monitoring
+## 🔮 Next Steps
 
-- **Logs**: `railway logs` or view in Railway dashboard
-- **Database**: Use Railway's built-in PostgreSQL viewer
-- **Metrics**: Check CPU, memory, requests in Railway dashboard
+1. **Automate article fetching** (GitHub Actions or Railway cron)
+2. **Add monitoring** (error alerts, uptime checks)
+3. **Custom domain** (Railway → Settings → Networking → Custom Domain)
+4. **Performance optimization** (caching, indexes)
 
----
 
-## Cost
-
-- **Free Tier**: $5/month credit (enough for small apps)
-- **Usage-based**: Pay only for what you use
-- **Includes**: Web service + PostgreSQL database
-
----
-
-## Troubleshooting
-
-**Build fails:**
-- Check `railway logs`
-- Verify `requirements.txt` is complete
-
-**Database connection errors:**
-- Ensure PostgreSQL database is added
-- Check DATABASE_URL is set automatically
-
-**App not starting:**
-- Verify PORT environment variable is used (already configured in main.py)
-- Check Procfile exists
-
----
-
-## Next Steps
-
-After deployment, consider:
-1. Set up automated nightly article fetching (cron job)
-2. Add custom domain
-3. Monitor usage and scale as needed

@@ -1,4 +1,5 @@
 """Initialize database and seed with sample data."""
+
 import sys
 from pathlib import Path
 
@@ -113,7 +114,7 @@ def seed_sample_articles():
             published_date=datetime.now() - timedelta(days=random.randint(0, 7)),
             content=article_data["content"],
             summary=article_data["summary"],
-            authors="Research Team"
+            authors="Research Team",
         )
         session.add(article)
         session.flush()  # Get article.id
@@ -124,7 +125,7 @@ def seed_sample_articles():
             category=article_data["category"],
             confidence=random.uniform(0.85, 0.98),
             relevancy_score=article_data["relevancy"],
-            tags=article_data["tags"]
+            tags=article_data["tags"],
         )
         session.add(classification)
 
@@ -138,9 +139,9 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Initialize database and seed data")
     parser.add_argument(
-        "--no-samples",
+        "--with-samples",
         action="store_true",
-        help="Skip adding sample articles (only initialize schema and categories)"
+        help="Add sample articles for testing (default: schema and categories only)",
     )
 
     args = parser.parse_args()
@@ -151,13 +152,15 @@ if __name__ == "__main__":
     print("Seeding categories...")
     seed_categories()
 
-    if not args.no_samples:
+    if args.with_samples:
         print("Adding sample articles...")
         seed_sample_articles()
     else:
-        print("Skipping sample articles (--no-samples flag set)")
+        print("Skipping sample articles (use --with-samples to include)")
 
     print("\n✓ Database setup complete!")
-    if args.no_samples:
+    if args.with_samples:
+        print("Database initialized with sample data.")
+    else:
         print("Database initialized with schema and categories only.")
-    print("Run 'python src/main.py' to start the application.")
+    print("Run 'python main.py' to start the application.")

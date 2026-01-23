@@ -2,4 +2,4 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "python scripts/init_db.py && python main.py"
+startCommand = "python main.py"
