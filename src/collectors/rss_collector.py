@@ -129,8 +129,11 @@ class RSSCollector:
         Returns:
             List of parsed articles
         """
-        # Parse the feed
-        feed = feedparser.parse(feed_url)
+        # Parse the feed with a realistic User-Agent to avoid 403 errors
+        feed = feedparser.parse(
+            feed_url,
+            agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+        )
 
         # Check for errors
         if hasattr(feed, "bozo") and feed.bozo:

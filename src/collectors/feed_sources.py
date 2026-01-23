@@ -15,23 +15,51 @@ RSS_FEEDS = [
         False,
     ),
     ("https://nvidianews.nvidia.com/rss.xml", "NVIDIA News", False),
-    # ("https://ai.stanford.edu/blog/feed.xml", "Stanford AI Lab", False),
-    # ========== Sustainability-focused sources (always include) ==========
-    # Auto-include all articles from sustainability feeds
+    ("https://blogs.microsoft.com/ai/feed/", "Microsoft AI Blog", False),
+    (
+        "https://aws.amazon.com/blogs/machine-learning/feed/",
+        "AWS Machine Learning Blog",
+        False,
+    ),
+    ("https://deepmind.google/blog/rss.xml", "Google DeepMind", False),
+    # ========== Sustainability-focused sources ==========
     (
         "https://blog.google/company-news/outreach-and-initiatives/sustainability/rss/",
         "Google Sustainability",
-        True,
+        False,
     ),
-    # Note: Apple Environment doesn't have RSS, only HTML page
     # ========== High-quality peer-reviewed journals (filtered) ==========
     # Nature family
     ("https://www.nature.com/nm.rss", "Nature Medicine", False),
     ("https://www.nature.com/natsustain.rss", "Nature Sustainability", False),
     ("https://www.nature.com/nclimate.rss", "Nature Climate Change", False),
+    ("https://www.nature.com/natmachintell.rss", "Nature Machine Intelligence", False),
+    ("https://www.nature.com/nenergy.rss", "Nature Energy", False),
     # Science/AAAS
     ("https://www.science.org/rss/news_current.xml", "Science Magazine", False),
-    # ========== UN News (filtered) ==========
+    # Medical Journals
+    # (
+    #     "https://www.thelancet.com/collection/rss/001611",
+    #     "The Lancet Digital Health Oncology",
+    #     False,
+    # ),
+    # (
+    #     "https://www.thelancet.com/collection/rss/001639",
+    #     "The Lancet Digital Health Radiology & Medical Imaging",
+    #     False,
+    # ),
+    # (
+    #     "https://www.thelancet.com/collection/rss/001536",
+    #     "The Lancet Digital Health Cardiology & Vascular Medicine",
+    #     False,
+    # ),
+    # (
+    #     "https://www.thelancet.com/collection/rss/001585",
+    #     "The Lancet Digital Health Neurology",
+    #     False,
+    # ),
+    # Climate & Environment
+    # ========== UN & International Organizations (filtered) ==========
     (
         "https://news.un.org/feed/subscribe/en/news/topic/health/feed/rss.xml",
         "UN Health News",
@@ -47,8 +75,12 @@ RSS_FEEDS = [
         "UN SDGs",
         False,
     ),
-    # ========== General tech news (filtered) ==========
+    # ========== Research institutions & universities (filtered) ==========
+    ("https://news.mit.edu/rss/topic/artificial-intelligence2", "MIT News - AI", False),
+    # ========== Tech news & industry (filtered) ==========
     ("https://www.apple.com/newsroom/rss-feed.rss", "Apple Newsroom", False),
+    ("https://www.wired.com/feed/tag/ai/latest/rss", "WIRED AI", False),
+    # ("https://spectrum.ieee.org/feeds/feed.rss", "IEEE Spectrum", False),
     # ========== arXiv feeds (experimental/preprints - for later use) ==========
     # ("http://export.arxiv.org/rss/q-bio.QM", "arXiv - Quantitative Methods in Biology", False),
     # ("http://export.arxiv.org/rss/cs.AI", "arXiv - Artificial Intelligence", False),

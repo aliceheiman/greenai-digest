@@ -284,7 +284,7 @@ def about():
         Div(
             H2("About GreenAI Digest", style="margin: 0 0 0.5rem 0;"),
             P(
-                "AI Research Focused on Environmental and Medical Impact",
+                "AI Research Focused on Human and Planetary Health",
                 style="color: var(--text-light); margin-bottom: 2rem;",
             ),
             P(

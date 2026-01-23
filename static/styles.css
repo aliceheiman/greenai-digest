@@ -3,27 +3,41 @@
 
 /* Root variables - Green & Gold color scheme */
 :root {
-    --green-primary: #2d5f3f;      /* Deep forest green */
-    --green-dark: #1f4429;         /* Darker green for hover */
-    --gold-accent: #d4af37;        /* Rich gold */
-    --gold-dark: #b8962e;          /* Darker gold for hover */
-    --gold-light: #f4e4b5;         /* Soft gold highlight */
+    --green-primary: #2d5f3f;
+    /* Deep forest green */
+    --green-dark: #1f4429;
+    /* Darker green for hover */
+    --gold-accent: #d4af37;
+    /* Rich gold */
+    --gold-dark: #b8962e;
+    /* Darker gold for hover */
+    --gold-light: #f4e4b5;
+    /* Soft gold highlight */
     --bg-white: #ffffff;
-    --bg-cream: #fafaf8;           /* Subtle cream background */
+    --bg-cream: #fafaf8;
+    /* Subtle cream background */
 
     /* Pastel category colors */
-    --pastel-red: #ffcdd2;         /* AI for Medicine */
-    --pastel-red-dark: #ef9a9a;    /* Hover state */
-    --pastel-green: #c8e6c9;       /* Green AI */
-    --pastel-green-dark: #a5d6a7;  /* Hover state */
-    --pastel-blue: #bbdefb;        /* AI for Planet */
-    --pastel-blue-dark: #90caf9;   /* Hover state */
-    --pastel-orange: #ffe0b2;      /* AI for Energy */
-    --pastel-orange-dark: #ffcc80; /* Hover state */
-    --pastel-purple: #e1bee7;      /* AI Ethics & Policy */
-    --pastel-purple-dark: #ce93d8; /* Hover state */
-    --pastel-gray: #e0e0e0;        /* Default */
-    --pastel-gray-dark: #bdbdbd;   /* Hover state */
+    --pastel-red: #ffcdd2;
+    /* AI for Medicine */
+    --pastel-red-dark: #ef9a9a;
+    /* Hover state */
+    --pastel-green: #c8e6c9;
+    /* Green AI */
+    --pastel-green-dark: #a5d6a7;
+    /* Hover state */
+    --pastel-blue: #bbdefb;
+    /* AI for Planet */
+    --pastel-blue-dark: #90caf9;
+    /* Hover state */
+    --pastel-purple: #e1bee7;
+    /* AI Ethics & Policy */
+    --pastel-purple-dark: #ce93d8;
+    /* Hover state */
+    --pastel-gray: #e0e0e0;
+    /* Default */
+    --pastel-gray-dark: #bdbdbd;
+    /* Hover state */
 
     /* Text colors */
     --text-dark: #1a1a1a;
@@ -41,16 +55,32 @@ body {
     padding: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'Lora', serif;
     font-weight: 600;
     color: var(--green-primary);
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.25rem; }
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+}
 
 /* Custom category badge styles */
 .category-medicine {
@@ -96,21 +126,6 @@ h4 { font-size: 1.25rem; }
 
 .category-planet:hover {
     background-color: var(--pastel-blue-dark);
-}
-
-.category-energy {
-    background-color: var(--pastel-orange);
-    color: #e65100;
-    padding: 0.35rem 0.75rem;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    border: 1px solid #ffcc80;
-    transition: background-color 0.2s ease;
-}
-
-.category-energy:hover {
-    background-color: var(--pastel-orange-dark);
 }
 
 .category-ethics {
@@ -169,7 +184,7 @@ h4 { font-size: 1.25rem; }
     border-radius: 0.75rem;
     padding: 1.5rem;
     margin-bottom: 1rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 /* Button styling */
@@ -253,8 +268,13 @@ a:hover {
         font-size: 1.25rem;
     }
 
-    h1 { font-size: 2rem; }
-    h2 { font-size: 1.5rem; }
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
 
     .article-card {
         padding: 1rem;
