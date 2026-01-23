@@ -9,7 +9,6 @@ A news aggregation and curation system focused on AI research with environmental
   - AI for Planet (climate modeling, energy efficiency)
   - AI for Medicine (lesion detection, diagnostic imaging)
   - Green AI (model efficiency, sustainable computing)
-  - AI Ethics & Policy (governance, fairness)
 
 ## Quick Start
 
