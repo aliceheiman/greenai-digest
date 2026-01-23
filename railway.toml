@@ -2,4 +2,4 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "python scripts/fetch_articles.py && python main.py"
+startCommand = "python scripts/fetch_articles.py --max-per-feed 100 && python main.py"
