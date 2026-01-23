@@ -5,9 +5,33 @@ from monsterui.all import *
 from src.database import get_session, Article, Classification
 from src.collectors.feed_sources import get_all_feeds
 from datetime import datetime
+import logging
+import os
+
+logger = logging.getLogger(__name__)
 
 # Create FastHTML app with link to external CSS
 app, rt = fast_app(hdrs=(Link(rel="stylesheet", href="/static/styles.css"),))
+
+# Initialize scheduler (optional - can be disabled by setting DISABLE_SCHEDULER=true)
+if os.getenv("DISABLE_SCHEDULER", "false").lower() != "true":
+    try:
+        from src.scheduler import create_scheduler
+        from scripts.fetch_articles_modular import fetch_and_store_articles
+
+        # Create and start scheduler
+        scheduler = create_scheduler(
+            fetch_function=fetch_and_store_articles,
+            hour=int(os.getenv("FETCH_HOUR", "2")),
+            minute=int(os.getenv("FETCH_MINUTE", "0")),
+        )
+        logger.info("✓ Article fetching scheduler enabled")
+    except Exception as e:
+        logger.warning(
+            f"⚠ Scheduler initialization failed: {e}. Continuing without scheduled fetching."
+        )
+else:
+    logger.info("ℹ Article fetching scheduler disabled (DISABLE_SCHEDULER=true)")
 
 
 def get_category_class(category):
@@ -447,6 +471,7 @@ def about():
 
 if __name__ == "__main__":
     import os
+
     # Get port from environment variable (Railway sets this) or use 5001 for local
     port = int(os.getenv("PORT", 5001))
     serve(host="0.0.0.0", port=port)
