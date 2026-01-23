@@ -48,12 +48,11 @@ def NavBar():
     return Div(
         Div(
             # Brand
-            Div("🌱 GreenAI Digest", cls="nav-brand"),
+            Div(A("🌱 GreenAI Digest", href="/"), cls="nav-brand"),
             # Nav links
             Div(
-                A("Daily Digest", href="/", cls="nav-link"),
                 A("About", href="/about", cls="nav-link"),
-                A("Archive", href="/archive", cls="nav-link"),
+                # A("Archive", href="/archive", cls="nav-link"),
                 style="display: flex; gap: 0.5rem; align-items: center;",
             ),
             style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem;",
